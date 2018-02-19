@@ -67,14 +67,14 @@ def keyCassParse(xmlDir, keyCassString):
 # The main method that reads strings from csv file, converts each xml entry
 # into dicts using keyCassParse() and infosParse(), feeds the dicts into add()
 
-def move(xmlDir, keyCassFromString, keyCassToString, saveDir):
+def move(xmlDir, keyCassFromString, keyCassToString):
     keyCassFrom = keyCassParse(xmlDir, keyCassFromString)
     keyCassTo = keyCassParse(xmlDir, keyCassToString)
-    singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, saveDir)
+    singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo)
 
 ## Test Code
 ##xmlDir = "test2.xml"
 ##keyCassFromString = '''[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/Title]; [PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/FieldNotExist/AddTest2/AddTest3]; [Polymernanocomposite/DATA_SOURCE/Citation/CommonFields]'''
 ##keyCassToString = '''[PolymerNanocomposite/DATA_SOURCE]; [PolymerNanocomposite/DATA_SOURCE]; [Polymernanocomposite/MATERIALS/NewField]'''
 ##saveDir = "./test_xml"
-##move(xmlDir, keyCassFromString, keyCassToString, saveDir)
+##move(xmlDir, keyCassFromString, keyCassToString)

@@ -23,12 +23,12 @@
 import xml.etree.ElementTree as ET
 
 # The function to update infos in several xml files in a batch
-def batchXmlInfoUpdate(keyCass, infos, saveDir):
+def batchXmlInfoUpdate(keyCass, infos):
     for xmlDir in keyCass: # equivalent to "for (xmlDir in infos):"
-        singleXmlInfoUpdate(xmlDir, keyCass, infos, saveDir)
+        singleXmlInfoUpdate(xmlDir, keyCass, infos)
         
 # The function to update infos in several fields in a single xml file
-def singleXmlInfoUpdate(xmlDir, keyCass, infos, saveDir):
+def singleXmlInfoUpdate(xmlDir, keyCass, infos):
     tree = ET.parse(xmlDir)
     root = tree.getroot()
     # unpack the two dicts keyCass and infos
@@ -37,13 +37,14 @@ def singleXmlInfoUpdate(xmlDir, keyCass, infos, saveDir):
     assert(len(keylist) == len(infolist))
     for x in xrange(len(keylist)):
         if (tree.find(keylist[x]) is None):
-            print '"' + keylist[x] + '"'
-            print "This field does not exist. No change done. Please check!"
+            # print '"' + keylist[x] + '"'
+            # print "This field does not exist. No change done. Please check!"
             continue
         else:
             tree.find(keylist[x]).text = infolist[x]
-    newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
-    tree.write(newXmlDir)
+    # newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
+    # tree.write(newXmlDir)
+    tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
 
 ## Test codes    
 ##xmlDir = "test2.xml"

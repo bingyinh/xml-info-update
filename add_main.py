@@ -83,14 +83,14 @@ def infosParse(xmlDir, infosString):
 # The main method that reads strings from csv file, converts each xml entry
 # into dicts using keyCassParse() and infosParse(), feeds the dicts into add()
 
-def add(xmlDir, keyCassString, infosString, saveDir):
+def add(xmlDir, keyCassString, infosString):
     keyCass = keyCassParse(xmlDir, keyCassString)
     infos = infosParse(xmlDir, infosString)
-    singleXmlFieldAdd(xmlDir, keyCass, infos, saveDir)
+    singleXmlFieldAdd(xmlDir, keyCass, infos)
 
 ## Test Code
 ##xmlDir = "test2.xml"
 ##keyCassString = '''[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/Issue];[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/AddTest1/AddTest2/AddTest3];  [PolymerNanocomposite/MATERIALS/Filler/FillerComponent/ChemicalName/AddTest4]'''
 ##infosString = '''test issue; ;test chemical'''
 ##saveDir = "./test_xml"
-##add(xmlDir, keyCassString, infosString, saveDir)
+##add(xmlDir, keyCassString, infosString)

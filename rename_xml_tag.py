@@ -23,12 +23,12 @@
 import xml.etree.ElementTree as ET
 
 # The function to rename tags in several xml files in a batch
-def batchXmlTagRename(keyCass, tags, saveDir):
+def batchXmlTagRename(keyCass, tags):
     for xmlDir in keyCass: # equivalent to "for (xmlDir in tags):"
-        singleXmlTagRename(xmlDir, keyCass, tags, saveDir)
+        singleXmlTagRename(xmlDir, keyCass, tags)
         
 # The function to rename tags in several fields in a single xml file
-def singleXmlTagRename(xmlDir, keyCass, tags, saveDir):
+def singleXmlTagRename(xmlDir, keyCass, tags):
     tree = ET.parse(xmlDir)
     root = tree.getroot()
     # unpack the two dicts keyCass and tags
@@ -37,13 +37,14 @@ def singleXmlTagRename(xmlDir, keyCass, tags, saveDir):
     assert(len(keylist) == len(taglist))
     for x in xrange(len(keylist)):
         if (tree.find(keylist[x]) is None):
-            print '"' + keylist[x] + '"'
-            print "This field does not exist. No rename done. Please check!"
+            # print '"' + keylist[x] + '"'
+            # print "This field does not exist. No rename done. Please check!"
             continue
         else:
             tree.find(keylist[x]).tag = taglist[x]
-    newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
-    tree.write(newXmlDir)
+    # newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
+    # tree.write(newXmlDir)
+    tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
 
 ## Test codes    
 ##xmlDir = "test2.xml"

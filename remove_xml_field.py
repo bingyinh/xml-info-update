@@ -20,9 +20,9 @@
 import xml.etree.ElementTree as ET
 
 # The function to remove fields in several xml files in a batch
-def batchXmlFieldRemove(keyCass, saveDir):
+def batchXmlFieldRemove(keyCass):
     for xmlDir in keyCass:
-        singleXmlFieldRemove(xmlDir, keyCass, saveDir)
+        singleXmlFieldRemove(xmlDir, keyCass)
 
 # The function to find the first correctly matched fields with specified child
 def findMyParent(tree, path, childTag):
@@ -55,7 +55,7 @@ def pinpointEmpty(tree):
     return tree
         
 # The function to remove several fields in a single xml file
-def singleXmlFieldRemove(xmlDir, keyCass, saveDir):
+def singleXmlFieldRemove(xmlDir, keyCass):
     tree = ET.parse(xmlDir)
     root = tree.getroot()
     # unpack the two dicts keyCass and infos
@@ -69,8 +69,8 @@ def singleXmlFieldRemove(xmlDir, keyCass, saveDir):
         exist = True
         for y in xrange(2, len(keyCas)):
             if (tree.find(pathExist + "/" + keyCas[y]) is None):
-                print '"' + pathExist + "/" + keyCas[y] + '"'
-                print "This field does not exist. No moving done. Please check!"
+                # print '"' + pathExist + "/" + keyCas[y] + '"'
+                # print "This field does not exist. No moving done. Please check!"
                 exist = False
                 break
             else:
@@ -84,7 +84,7 @@ def singleXmlFieldRemove(xmlDir, keyCass, saveDir):
         occur = len(tree.findall(pathExist))
         if not exist:
             occur = 0
-        print tree.findall(pathExist)
+        # print tree.findall(pathExist)
         for field in xrange(occur): # If occur is 0, we won't enter the loop
             parent = findMyParent(tree, parentPath, keyCas[-1])
             child = tree.find(parentPath + "/" + keyCas[-1])
@@ -94,9 +94,9 @@ def singleXmlFieldRemove(xmlDir, keyCass, saveDir):
     # END OF THE LOOP
     # Final check of empty fields
     tree = pinpointEmpty(tree)
-    newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
-    tree.write(newXmlDir)
-    
+    # newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
+    # tree.write(newXmlDir)
+    tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
 
     
 ## Test code

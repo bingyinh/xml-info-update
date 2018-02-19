@@ -82,10 +82,10 @@ def infosParse(xmlDir, infosString):
 # The main method that reads strings from csv file, converts each xml entry
 # into dicts using keyCassParse() and infosParse(), feeds the dicts into change()
 
-def change(xmlDir, keyCassString, infosString, saveDir):
+def change(xmlDir, keyCassString, infosString):
     keyCass = keyCassParse(xmlDir, keyCassString)
     infos = infosParse(xmlDir, infosString)
-    singleXmlInfoUpdate(xmlDir, keyCass, infos, saveDir)
+    singleXmlInfoUpdate(xmlDir, keyCass, infos)
     
 ## Test Cases
 def testKeyCassParse():
@@ -112,4 +112,4 @@ def testInfosParse():
 ##kcs = '''[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/Title]; [PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/Publishe]; [PolymerNanocomposite/MATERIALS/Filler/FillerComponent/ChemicalName]'''
 ##infosString = '''test title; test publisher; test chemical'''
 ##saveDir = "./test_xml"
-##change(xmlDir, kcs, infosString, saveDir)
+##change(xmlDir, kcs, infosString,)
