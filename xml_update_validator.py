@@ -35,6 +35,7 @@ def runValidation(xmlDir, xsdDir):
         f.write("Date: " + date.today().isoformat() + "\n")
         for error in errors:
             f.write(error + "\n")
+    return logName
 
 if __name__ == "__main__":
     xmlDir = raw_input("Please type in the directory of the folder of the xml files:")
@@ -43,4 +44,5 @@ if __name__ == "__main__":
     xsdDir = raw_input("Please type in the directory of the xsd schema file:")
     while xsdDir == "":
         xsdDir = raw_input("Please type in the directory of the xsd schema file:")
-    runValidation(xmlDir, xsdDir)
+    logName = runValidation(xmlDir, xsdDir)
+    print "Errors are saved in the log: " + logName
