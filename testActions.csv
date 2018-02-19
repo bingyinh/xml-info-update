@@ -1,6 +1,0 @@
-action,json directory,key cascades,infos,destination key cascades
-change,E:/Duke/DIBBS/crawl/new_version/info_update/test_change.xml,[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/Title]; [PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/Publisher]; [PolymerNanocomposite/MATERIALS/Filler/FillerComponent/ChemicalName],test title; test publisher; fake clay,
-add,E:/Duke/DIBBS/crawl/new_version/info_update/test_add.xml,[PolymerNanocomposite/AddTest1]; [PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/AddTest2]; [PolymerNanocomposite/MATERIALS/Filler/FillerComponent/AddTest3],test add; ; 4 ,
-remove,E:/Duke/DIBBS/crawl/new_version/info_update/test_remove.xml,[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/Title];[PolymerNanocomposite/PROPERTIES];[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/Issue],,
-move,E:/Duke/DIBBS/crawl/new_version/info_update/test_move.xml,[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields]; [PolymerNanocomposite/MATERIALS/Filler/FillerComponent/ChemicalName],,[PolymerNanocomposite/PROCESSING/SolutionProcessing]; [PolymerNanocomposite/MATERIALS/ChemicalName]
-rename,E:/Duke/DIBBS/crawl/new_version/info_update/test_rename.xml,[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields]; [PolymerNanocomposite/MATERIALS/Filler/FillerComponent/ChemicalName],newCommonFields; newChemicalName,

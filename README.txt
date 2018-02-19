@@ -5,11 +5,9 @@
 ===========================================
 ===============By Bingyin Hu===============
 ===========================================
-
-=====================
-|System preparations|
-=====================
-
+©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´
+©¦System preparations©¦
+©¸©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼
 Required packages:
 >>> shutil
     Python default package
@@ -26,9 +24,9 @@ Required packages:
 >>> string
     Python default package
 
-=============
-|How to run?|
-=============
+©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´
+©¦How to run?©¦
+©¸©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼
 
 When the xml schema is updated, all existing data entries in NanoMine need to be updated
 to the latest version of the schema. It will take four steps to do so.
@@ -46,9 +44,9 @@ The scripts of STEP 1 and STEP 4 contain sensitive information and thus are not 
 For STEP 2 and STEP 3, all users need to do is to prepare a single csv file that specifies
 all the actions required for updating one xml file (see example.csv), and run main.py.
 
-==============
-|Preparations|
-==============
+©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´
+©¦Preparations©¦
+©¸©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼
 
 >>> The very first step: CSV file preparation
     The update of xml files in batch is accomplished by utilizing a csv file. Each line
@@ -89,10 +87,9 @@ all the actions required for updating one xml file (see example.csv), and run ma
     In the following step, the update works will all be done in the "_updated" folder
     without making changes to the original xml files.
 
-=============================================
-|Actions (change, add, remove, move, rename)|
-=============================================
-
+©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´
+©¦Actions (change, add, remove, move, rename)©¦
+©¸©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼
 >>> Change Info in a Field (pass test on 11/15/2017)
     1) Prepare a csv file, fill in column 1 with "change", fill in column 2 with the 
        directory of the xml file. In column 3, fill in the key cascade. For example: 
