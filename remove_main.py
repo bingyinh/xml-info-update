@@ -59,12 +59,12 @@ def keyCassParse(xmlDir, keyCassString):
 # The main method that reads strings from csv file, converts each xml entry
 # into dicts using keyCassParse(), feeds the dicts into remove()
 
-def remove(xmlDir, keyCassString, saveDir):
+def remove(xmlDir, keyCassString):
     keyCass = keyCassParse(xmlDir, keyCassString)
-    singleXmlFieldRemove(xmlDir, keyCass, saveDir)
+    singleXmlFieldRemove(xmlDir, keyCass)
 
 ## Test Code
 ##xmlDir = "test2.xml"
 ##keyCassString = '''[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields]; [PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/AddTest1/AddTest2/AddTest3]; [Polymernanocomposite/MATERIALS/Filler/FillerComponent/ChemicalName]'''
 ##saveDir = "./test_xml"
-##remove(xmlDir, keyCassString, saveDir)
+##remove(xmlDir, keyCassString)

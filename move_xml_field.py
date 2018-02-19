@@ -22,11 +22,12 @@
 ## =============================================================================
 import xml.etree.ElementTree as ET
 import copy
+import string
 
 # The function to move fields in several xml files in a batch
-def batchXmlFieldMove(keyCassFrom, keyCassTo, saveDir):
+def batchXmlFieldMove(keyCassFrom, keyCassTo):
     for xmlDir in keyCassFrom: # equivalent to "for (xmlDir in keyCassTo):"
-        singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, saveDir)
+        singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo)
 
 # The function to find the first correctly matched fields with specified child
 def findMyParent(tree, path, childTag):
@@ -41,8 +42,41 @@ def findMyParent(tree, path, childTag):
                     return parent
     return None
 
+# The function to find out the index of keyCasFrom if the tree exists more
+# than one path that leads to the shared path of keyCasFrom and keyCasTo. For
+# example, PolymerNanocomposite/MATERIALS/Filler/FillerComposition/ is a shared
+# path between ".../volume" ".../mass" and ".../Fraction/volume"
+# ".../Fraction/mass". The index of first occurence of keyCasFrom is returned.
+def pathIndex(keyCasFrom, keyCasTo, tree):
+    ptr = 0 # a pointer used to find out the shared path, it will stop at the
+    # first different string
+    # print "keyCasFrom: " + str(keyCasFrom)
+    # print "keyCasTo: " + str(keyCasTo)
+    while ptr < len(keyCasFrom) and keyCasFrom[ptr] == keyCasTo[ptr]:
+        ptr += 1
+    shared = keyCasFrom[1:ptr]
+    sharedPath = "./" + string.join(shared, "/")
+    matches = tree.findall(sharedPath)
+    # now we iterate through the matches of sharedPath to find the real match of
+    # keyCasFrom
+    index = 0 # the index of first occurence of keyCasFrom
+    for match in matches:
+        # inner loop
+        for x in xrange(ptr, len(keyCasFrom)):
+            # if keyCasFrom[x] is not a child
+            if match.find(keyCasFrom[x]) is None:
+                break
+            # otherwise, update match to this child
+            match = match.find(keyCasFrom[x])
+            # if x moves all the way to the end of keyCasFrom
+            if x == len(keyCasFrom) - 1:
+                return index
+        # end of inner loop, add 1 to index
+        index += 1
+    return -1
+
 # The function to move fields in a single xml file
-def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, saveDir):
+def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo):
     # first insert (duplicate), then remove
     tree = ET.parse(xmlDir)
     root = tree.getroot()
@@ -54,14 +88,15 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, saveDir):
     # which stands for how many fields we'd like to move
         keyCasFrom = keyFromList[x].split("/")
         keyCasTo = keyToList[x].split("/")
+        
         # Let's confirm whether the field to move exists or not
         pathExist = "./"
         # a flag for field existence
         exist = True
         for z in xrange(2, len(keyCasFrom)):
             if (tree.find(pathExist + "/" + keyCasFrom[z]) is None):
-                print '"' + pathExist + "/" + keyCasFrom[z] + '"'
-                print "This field does not exist. No moving done. Please check!"
+                # print '"' + pathExist + "/" + keyCasFrom[z] + '"'
+                # print "This field does not exist. No moving done. Please check!"
                 exist = False
                 break
             else:
@@ -71,10 +106,12 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, saveDir):
         occur = len(tree.findall(pathExist))
         if not exist:
             occur = 0
-        print tree.findall(pathExist)
+        # print tree.findall(pathExist)
         dupPath = '' # to save the path to the last duplicated tag s.t. we can change its tag name
         realTag = '' # to save the real tag name for temporary tags
         for field in xrange(occur): # If occur is 0, we won't enter the loop
+            # find out the index of keyCasFrom in the tree.findall() outputs
+            index = pathIndex(keyCasFrom, keyCasTo, tree)
             # The way we move a field is to 1) copy the node 2) insert to the new
             # parent node 3) remove the original node
             # If the original node is one of the parent nodes of the moved node,
@@ -92,12 +129,10 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, saveDir):
                 pathExist = "./"
                 # create the move-to field with a temporary parent tag name
                 for y in xrange(2, len(dupKeyCasTo) - 1):
-                    if (findMyParent(tree, pathExist, dupKeyCasTo[y]) is None):
+                    if (pathExist != "./" and findMyParent(tree, pathExist, dupKeyCasTo[y]) is None):
                         newtree = tree.find(pathExist)
                         if y == dup:
                             newtree = findMyParent(tree, pathExist, keyCasFrom[y])
-                            print 'Line 98: ' + pathExist
-                            print 'Line 99: ' + keyCasFrom[y]
                         ET.SubElement(newtree, dupKeyCasTo[y])
                         pathExist = pathExist + "/" + dupKeyCasTo[y]
                     else:
@@ -118,44 +153,51 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, saveDir):
                         child = tree.find(destParentTempCas + "/" + keyCasFrom[z])
                         child.tag = keyCasTo[-1] # rename the tag according to the specification of the user from Solvent to SolventName
                         destParent.insert(0, child) # now destParent is Element (./.../ChooseParameter/ATempTagThatWantsNoSimilarity/SolventName)
-                        print 'Line 119: ' + ET.tostring(destParent)
-                        print 'Line 120: ' + ET.tostring(parent)
+                        # print 'Line 157: ' + ET.tostring(destParent)
+                        # print 'Line 153: ' + ET.tostring(parent)
                         # call remove(subfield)
                         parent.remove(child)
                     destParentTempCas = destParentTempCas + "/" + keyCasFrom[z]
             else:
-                # If the field we'd like to move exists
+                # If the field we'd like to move will not be moved to its own
+                # sublevel
                 # Let's find the destination, if it does not exist, we create it
                 pathExist = "./"
                 for y in xrange(2, len(keyCasTo) - 1):
-                    if (tree.find(pathExist + "/" + keyCasTo[y]) is None):
-                        newtree = tree.find(pathExist)
+                    # if (tree.findall(pathExist + "/" + keyCasTo[y]) is None):
+                    if (len(tree.findall(pathExist + "/" + keyCasTo[y])) < index+1):
+                        newtree = tree.findall(pathExist)[index]
                         ET.SubElement(newtree, keyCasTo[y])
                         pathExist = pathExist + "/" + keyCasTo[y]
                     else:
                         pathExist = pathExist + "/" + keyCasTo[y]
                 # last node, save the node as the destination parent node
-                destParent = tree.find(pathExist)
+                # print "index: " + str(index)
+                destParent = tree.findall(pathExist)[index]
+                # print "destParent: " + str(destParent)
+                
                 # Let's find the field to move, insert it to the destination, and remove
                 # the original field
                 pathExist = "./"
                 for z in xrange(2, len(keyCasFrom)):
                     # this if statement should not be entered anymore
                     if (tree.find(pathExist + "/" + keyCasFrom[z]) is None):
-                        print '"' + pathExist + "/" + keyCasFrom[z] + '"'
-                        print "This field does not exist. No moving done. Please check!"
+                        # print '"' + pathExist + "/" + keyCasFrom[z] + '"'
+                        # print "This field does not exist. No moving done. Please check!"
                         break
                     else:
                         # last node then insert
                         if (z == len(keyCasFrom) - 1):
                             # find the parent node of the field to remove
-                            parent = tree.find(pathExist)
-##                            print pathExist
-##                            print parent
-##                            print '===='
+                            # parent = findMyParent(tree, pathExist, keyCasFrom[-1])
+                            parent = tree.findall(pathExist)[index]
+                            # print pathExist
+                            # print parent
+                            # print '===='
                             child = tree.find(pathExist + "/" + keyCasFrom[z])
                             child.tag = keyCasTo[-1] # rename the tag according to the specification of the user
-##                            print child
+                            # print child
+                            # print destParent
                             destParent.insert(0, child)
                             # call remove(subfield)
                             parent.remove(child)
@@ -166,9 +208,10 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, saveDir):
                 tempTag = tree.find(dupPath[:len(dupPath) - len(str(occur))] + str(field))
                 tempTag.tag = realTag
 
-    newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
-    tree.write(newXmlDir)
-
+    # newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
+    # tree.write(newXmlDir)
+    tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
+    # tree.write(xmlDir + 'new.xml', encoding="UTF-8", xml_declaration=True)
 
 ## Test code
 ##xmlDir = "test2.xml"

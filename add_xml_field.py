@@ -23,12 +23,12 @@
 import xml.etree.ElementTree as ET
 
 # The function to add fields in several xml files in a batch
-def batchXmlFieldAdd(keyCass, infos, saveDir):
+def batchXmlFieldAdd(keyCass, infos):
     for xmlDir in keyCass: # equivalent to "for (xmlDir in infos):"
-        singleXmlFieldAdd(xmlDir, keyCass, infos, saveDir)
+        singleXmlFieldAdd(xmlDir, keyCass, infos)
         
 # The function to add several fields in a single xml file
-def singleXmlFieldAdd(xmlDir, keyCass, infos, saveDir):
+def singleXmlFieldAdd(xmlDir, keyCass, infos):
     tree = ET.parse(xmlDir)
     root = tree.getroot()
     # unpack the two dicts keyCass and infos
@@ -49,8 +49,9 @@ def singleXmlFieldAdd(xmlDir, keyCass, infos, saveDir):
                         newtree.find(keyCas[y]).text = infolist[x]
             else:
                 pathExist = pathExist + "/" + keyCas[y]
-    newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
-    tree.write(newXmlDir)
+    # newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
+    # tree.write(newXmlDir)
+    tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
 
 ## Test code
 ##xmlDir = "test2.xml"

@@ -82,10 +82,10 @@ def tagsParse(xmlDir, tagsString):
 # The main method that reads strings from csv file, converts each xml entry
 # into dicts using keyCassParse() and tagsParse(), feeds the dicts into change()
 
-def rename(xmlDir, keyCassString, tagsString, saveDir):
+def rename(xmlDir, keyCassString, tagsString):
     keyCass = keyCassParse(xmlDir, keyCassString)
     tags = tagsParse(xmlDir, tagsString)
-    singleXmlTagRename(xmlDir, keyCass, tags, saveDir)
+    singleXmlTagRename(xmlDir, keyCass, tags)
     
 ## Test Cases
 def testKeyCassParse():
@@ -113,4 +113,4 @@ def testTagsParse():
 ##kcs = '''[PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/Title]; [PolymerNanocomposite/DATA_SOURCE/Citation/CommonFields/Publishe]; [PolymerNanocomposite/MATERIALS/Filler/FillerComponent/ChemicalName]'''
 ##tagsString = '''Title_rename; Publisher_rename; Chemical_rename'''
 ##saveDir = "./test_xml"
-##rename(xmlDir, kcs, tagsString, saveDir)
+##rename(xmlDir, kcs, tagsString)
