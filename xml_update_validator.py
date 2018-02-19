@@ -28,7 +28,7 @@ def runValidation(xmlDir, xsdDir):
     for xml_file in xml_files:
         xml = etree.parse(xml_file)
         if not xmlschema.validate(xml):
-            errors.append(xml_file)
+            errors.append(xml_file.split("\\")[-1])
     logName = 'xml_validation_error_log_' + date.today().isoformat() + '.txt'
     with open(logName, 'w+') as f:
         f.write("ERROR LOG\n")
