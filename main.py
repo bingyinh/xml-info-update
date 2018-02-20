@@ -50,22 +50,22 @@ from info_update_master import runInfoUpdate
 from xml_update_validator import runValidation
 
 if __name__ == "__main__":
-    csvDir = raw_input("Please type in the directory of the csv file:")
-    while csvDir == "":
-       csvDir = raw_input("Please type in the directory of the csv file:")
-    xmlDir = raw_input("Please type in the directory of the folder of the xml files:")
-    while xmlDir == "":
-       xmlDir = raw_input("Please type in the directory of the folder of the xml files:")
-    schemaID = raw_input("Please type in the schemaID:")
-    while schemaID == "":
-       schemaID = raw_input("Please type in the schemaID:")
-    xsdDir = raw_input("Please type in the directory of the xsd schema file:")
-    while xsdDir == "":
-        xsdDir = raw_input("Please type in the directory of the xsd schema file:")
-##    csvDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/042917to021918.csv"
-##    xmlDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/xmlForUpdate2018-02-16/"
-##    schemaID = '5904922ce74a1d36e1b78b7f' # PNC_schema_042917
-##    xsdDir = "./schema/PNC_schema_021918.xsd"
+##    csvDir = raw_input("Please type in the directory of the csv file:")
+##    while csvDir == "":
+##       csvDir = raw_input("Please type in the directory of the csv file:")
+##    xmlDir = raw_input("Please type in the directory of the folder of the xml files:")
+##    while xmlDir == "":
+##       xmlDir = raw_input("Please type in the directory of the folder of the xml files:")
+##    schemaID = raw_input("Please type in the schemaID:")
+##    while schemaID == "":
+##       schemaID = raw_input("Please type in the schemaID:")
+##    xsdDir = raw_input("Please type in the directory of the xsd schema file:")
+##    while xsdDir == "":
+##        xsdDir = raw_input("Please type in the directory of the xsd schema file:")
+    csvDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/042917to021918.csv"
+    xmlDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/xmlForUpdate2018-02-16/"
+    schemaID = '5904922ce74a1d36e1b78b7f' # PNC_schema_042917
+    xsdDir = "./schema/PNC_schema_021918.xsd"
     (backupDir, csvCompDir) = runcsvCompletor(csvDir, xmlDir, schemaID)
     if csvCompDir is not None and backupDir is not None:
         runInfoUpdate(csvCompDir)
@@ -82,6 +82,6 @@ if __name__ == "__main__":
         print "csv file completion failure! Please check your csv file."
     print "================================================================"
     print "Validation started!"
-    logName = runValidation(xmlDir, xsdDir)
+    logName = runValidation(backupDir, xsdDir)
     print "================================================================"
 
