@@ -18,6 +18,7 @@
 from lxml import etree
 import glob
 from datetime import date
+import csv
 
 # A function that takes in the directory of the xml folder and the schema file,
 # run the validation one by one and generate an error log.
@@ -28,13 +29,16 @@ def runValidation(xmlDir, xsdDir):
     for xml_file in xml_files:
         xml = etree.parse(xml_file)
         if not xmlschema.validate(xml):
-            errors.append(xml_file.split("\\")[-1])
-    logName = 'xml_validation_error_log_' + date.today().isoformat() + '.txt'
-    with open(logName, 'a+') as f:
-        f.write("ERROR LOG\n")
-        f.write("Date: " + date.today().isoformat() + "\n")
+            errorInfo = str(xmlschema.error_log.last_error)
+            errorInfo = errorInfo[errorInfo.rfind('SCHEMAV_ELEMENT_CONTENT:')+len('SCHEMAV_ELEMENT_CONTENT:'):-1]
+            errors.append({'xml directory': xml_file.split("\\")[-1],
+                           'error': errorInfo})
+    logName = 'xml_validation_error_log_' + date.today().isoformat() + '.csv'
+    with open(logName, 'wb') as f:
+        writer = csv.DictWriter(f, fieldnames = ['xml directory', 'error'])
+        writer.writerow({'xml directory':"Date: " + date.today().isoformat()})
         for error in errors:
-            f.write(error + "\n")
+            writer.writerow(error)
     return logName
 
 if __name__ == "__main__":
