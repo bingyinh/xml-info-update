@@ -41,7 +41,9 @@ def singleXmlTagRename(xmlDir, keyCass, tags):
             # print "This field does not exist. No rename done. Please check!"
             continue
         else:
-            tree.find(keylist[x]).tag = taglist[x]
+            oldtags = tree.findall(keylist[x])
+            for oldtag in oldtags:
+                oldtag.tag = taglist[x]
     # newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
     # tree.write(newXmlDir)
     tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
