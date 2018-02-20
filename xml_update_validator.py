@@ -30,7 +30,7 @@ def runValidation(xmlDir, xsdDir):
         if not xmlschema.validate(xml):
             errors.append(xml_file.split("\\")[-1])
     logName = 'xml_validation_error_log_' + date.today().isoformat() + '.txt'
-    with open(logName, 'w+') as f:
+    with open(logName, 'a+') as f:
         f.write("ERROR LOG\n")
         f.write("Date: " + date.today().isoformat() + "\n")
         for error in errors:
