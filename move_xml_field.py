@@ -209,8 +209,8 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo):
 
     # newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
     # tree.write(newXmlDir)
-    # tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
-    tree.write(xmlDir + 'new.xml', encoding="UTF-8", xml_declaration=True)
+    tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
+    # tree.write(xmlDir + 'new.xml', encoding="UTF-8", xml_declaration=True)
 
 ## Test code
 ##xmlDir = "test2.xml"
