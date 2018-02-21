@@ -5,9 +5,9 @@
 ===========================================
 ===============By Bingyin Hu===============
 ===========================================
-©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´
-©¦System preparations©¦
-©¸©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼
+ -------------------
+[System preparations]
+ -------------------
 Required packages:
 >>> shutil
     Python default package
@@ -23,10 +23,12 @@ Required packages:
     Python default package
 >>> string
     Python default package
-
-©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´
-©¦How to run?©¦
-©¸©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼
+>>> lxml
+    We use this package to validate xml files with xsd schema
+    http://lxml.de/
+ -----------
+[How to run?]
+ -----------
 
 When the xml schema is updated, all existing data entries in NanoMine need to be updated
 to the latest version of the schema. It will take four steps to do so.
@@ -37,16 +39,22 @@ to the latest version of the schema. It will take four steps to do so.
     >>> Details see Preparations section
     STEP 3 Update info in xml files
     >>> Details see Actions section
-    STEP 4 Upload xml files to database
+    STEP 4 Validate the updated xml files
+    >>> Details see Validation section
+    STEP 5 Upload xml files to database
     >>> upload_to_db.py
 
-The scripts of STEP 1 and STEP 4 contain sensitive information and thus are not provided.
-For STEP 2 and STEP 3, all users need to do is to prepare a single csv file that specifies
-all the actions required for updating one xml file (see example.csv), and run main.py.
+The scripts of STEP 1 and STEP 5 contain sensitive information and thus are not provided.
+For STEP 2 through STEP 4, all users need to do is to prepare a single csv file that 
+specifies all the actions required for updating one xml file (see example.csv), and run
+main.py. The script will complete the csv file for all xml files in the given folder, 
+copy and update all xml files in a new folder with the same name of the original xml
+folder tailed with "_update", validate the updated xml files with the given xsd schema,
+and generate an error log.
 
-©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´
-©¦Preparations©¦
-©¸©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼
+ ------------
+[Preparations]
+ ------------
 
 >>> The very first step: CSV file preparation
     The update of xml files in batch is accomplished by utilizing a csv file. Each line
@@ -87,9 +95,9 @@ all the actions required for updating one xml file (see example.csv), and run ma
     In the following step, the update works will all be done in the "_updated" folder
     without making changes to the original xml files.
 
-©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´
-©¦Actions (change, add, remove, move, rename)©¦
-©¸©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼
+ -------------------------------------------
+[Actions (change, add, remove, move, rename)]
+ -------------------------------------------
 >>> Change Info in a Field (pass test on 11/15/2017)
     1) Prepare a csv file, fill in column 1 with "change", fill in column 2 with the 
        directory of the xml file. In column 3, fill in the key cascade. For example: 
@@ -156,4 +164,9 @@ all the actions required for updating one xml file (see example.csv), and run ma
        newtag1; newtag2
     2) Run info_update_master.py and enter the csv file directory on prompt.
 
+ ----------
+[Validation]
+ ----------
 
+When the xml files are updated, a call will be made to xml_update_validator.py to validate
+the updated xml files with the given schema. An error log will be exported in csv format.
