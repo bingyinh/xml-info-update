@@ -70,10 +70,10 @@ def pathIndex(keyCasFrom, keyCasTo, tree):
             match = match.find(keyCasFrom[x])
             # if x moves all the way to the end of keyCasFrom
             if x == len(keyCasFrom) - 1:
-                return index
+                return (index, sharedPath, ptr)
         # end of inner loop, add 1 to index
         index += 1
-    return -1
+    return (-1, sharedPath, ptr)
 
 # The function to move fields in a single xml file
 def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo):
@@ -111,7 +111,7 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo):
         realTag = '' # to save the real tag name for temporary tags
         for field in xrange(occur): # If occur is 0, we won't enter the loop
             # find out the index of keyCasFrom in the tree.findall() outputs
-            index = pathIndex(keyCasFrom, keyCasTo, tree)
+            (index, sharedPath, ptr) = pathIndex(keyCasFrom, keyCasTo, tree)
             # The way we move a field is to 1) copy the node 2) insert to the new
             # parent node 3) remove the original node
             # If the original node is one of the parent nodes of the moved node,
@@ -162,8 +162,8 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo):
                 # If the field we'd like to move will not be moved to its own
                 # sublevel
                 # Let's find the destination, if it does not exist, we create it
-                pathExist = "./"
-                for y in xrange(2, len(keyCasTo) - 1):
+                pathExist = sharedPath
+                for y in xrange(ptr, len(keyCasTo) - 1):
                     # if (tree.findall(pathExist + "/" + keyCasTo[y]) is None):
                     if (len(tree.findall(pathExist + "/" + keyCasTo[y])) < index+1):
                         newtree = tree.findall(pathExist)[index]
@@ -175,11 +175,10 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo):
                 # print "index: " + str(index)
                 destParent = tree.findall(pathExist)[index]
                 # print "destParent: " + str(destParent)
-                
                 # Let's find the field to move, insert it to the destination, and remove
                 # the original field
-                pathExist = "./"
-                for z in xrange(2, len(keyCasFrom)):
+                pathExist = sharedPath
+                for z in xrange(ptr, len(keyCasFrom)):
                     # this if statement should not be entered anymore
                     if (tree.find(pathExist + "/" + keyCasFrom[z]) is None):
                         # print '"' + pathExist + "/" + keyCasFrom[z] + '"'
@@ -210,8 +209,8 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo):
 
     # newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
     # tree.write(newXmlDir)
-    tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
-    # tree.write(xmlDir + 'new.xml', encoding="UTF-8", xml_declaration=True)
+    # tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
+    tree.write(xmlDir + 'new.xml', encoding="UTF-8", xml_declaration=True)
 
 ## Test code
 ##xmlDir = "test2.xml"
