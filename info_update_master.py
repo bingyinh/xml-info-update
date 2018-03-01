@@ -102,4 +102,4 @@ if __name__ == "__main__":
 ##        saveDir = raw_input("Where would you like your updated xml files saved?")
     # csvDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/042917to010918test.csv"
     # saveDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema"
-    run_info_update(csvDir)
+    runInfoUpdate(csvDir)
