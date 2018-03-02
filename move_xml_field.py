@@ -163,37 +163,43 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo):
                 # sublevel
                 # Let's find the destination, if it does not exist, we create it
                 pathExist = sharedPath
+                treeNow = tree.findall(pathExist)[index]
                 for y in xrange(ptr, len(keyCasTo) - 1):
-                    # if (tree.findall(pathExist + "/" + keyCasTo[y]) is None):
-                    if (len(tree.findall(pathExist + "/" + keyCasTo[y])) < index+1):
-                        newtree = tree.findall(pathExist)[index]
-                        ET.SubElement(newtree, keyCasTo[y])
-                        pathExist = pathExist + "/" + keyCasTo[y]
-                    else:
-                        pathExist = pathExist + "/" + keyCasTo[y]
+                    if (len(treeNow.findall(keyCasTo[y])) == 0):
+                    # if (len(tree.findall(pathExist + "/" + keyCasTo[y])) < index+1):
+                        # newtree = tree.findall(pathExist)[index]
+                        ET.SubElement(treeNow, keyCasTo[y])
+                    #     pathExist = pathExist + "/" + keyCasTo[y]
+                    # else:
+                    #     pathExist = pathExist + "/" + keyCasTo[y]
+                    pathExist = pathExist + "/" + keyCasTo[y]
+                    treeNow = treeNow.find(keyCasTo[y])
                 # last node, save the node as the destination parent node
                 # print "index: " + str(index)
-                destParent = tree.findall(pathExist)[index]
+                # destParent = tree.findall(pathExist)[index]
+                destParent = treeNow
                 # print "destParent: " + str(destParent)
                 # Let's find the field to move, insert it to the destination, and remove
                 # the original field
                 pathExist = sharedPath
+                treeNow = tree.findall(pathExist)[index]
                 for z in xrange(ptr, len(keyCasFrom)):
                     # this if statement should not be entered anymore
-                    if (tree.find(pathExist + "/" + keyCasFrom[z]) is None):
+                    if (treeNow.find(keyCasFrom[z]) is None):
                         # print '"' + pathExist + "/" + keyCasFrom[z] + '"'
                         # print "This field does not exist. No moving done. Please check!"
                         break
                     else:
                         # last node then insert
                         if (z == len(keyCasFrom) - 1):
+                            print treeNow
                             # find the parent node of the field to remove
                             # parent = findMyParent(tree, pathExist, keyCasFrom[-1])
-                            parent = tree.findall(pathExist)[index]
+                            parent = treeNow
                             # print pathExist
                             # print parent
                             # print '===='
-                            child = tree.find(pathExist + "/" + keyCasFrom[z])
+                            child = treeNow.find(keyCasFrom[z])
                             child.tag = keyCasTo[-1] # rename the tag according to the specification of the user
                             # print child
                             # print destParent
@@ -201,6 +207,7 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo):
                             # call remove(subfield)
                             parent.remove(child)
                         pathExist = pathExist + "/" + keyCasFrom[z]
+                        treeNow = treeNow.find(keyCasFrom[z])
         # rename the 'ATempTagThatWantsNoSimilarity' all at once
         for field in xrange(occur):
             if len(dupPath) > 0:
