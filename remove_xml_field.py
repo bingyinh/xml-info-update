@@ -46,13 +46,11 @@ def pinpointEmpty(tree):
             # if we detect an empty field
             # print field
             if len(list(field)) == 0 and field.text is None:
-                print field
                 field.tag = "RRREEEMMOOOVVVEEEMMMEEE" # rename its tag
                 treeStr = ET.tostring(tree.getroot()) # transform to string
                 treeStr = treeStr.replace('<RRREEEMMOOOVVVEEEMMMEEE>', '') # remove leading tag
                 treeStr = treeStr.replace('</RRREEEMMOOOVVVEEEMMMEEE>', '') # remove following tag
                 treeStr = treeStr.replace('<RRREEEMMOOOVVVEEEMMMEEE />', '') # remove unpaired tag
-                print treeStr
                 tree._setroot(ET.fromstring(treeStr)) # transform back to xml tree
                 end = False
                 break
