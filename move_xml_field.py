@@ -63,13 +63,13 @@ def pathIndex(keyCasFrom, keyCasTo, tree):
     shared = keyCasFrom[0:ptr]
     sharedPath = string.join(shared, "/")
     matches = tree.findall(sharedPath)
-    print sharedPath
+    # print sharedPath
     # print matches
     # now we iterate through the matches of sharedPath to find the real match of
     # keyCasFrom
     index = 0 # the index of first occurence of keyCasFrom
     # print "========================"
-    print matches
+    # print matches
     for match in matches:
         # inner loop
         for x in xrange(ptr, len(keyCasFrom)-1):
@@ -110,23 +110,44 @@ def occPath(keyCasTo, occurrence, tree):
 
 # A function that help remove first empty field in an xml tree
 def pinpointEmpty(tree):
+    ## version 1
+    # end = False
+    # hardcap = 0 # run up to 1000 iterations
+    # while not end and hardcap < 1000:
+    #     end = True
+    #     for field in tree.iter():
+    #         # if we detect an empty field
+    #         # print field
+    #         if len(list(field)) == 0 and field.text is None:
+    #             field.tag = "RRREEEMMOOOVVVEEEMMMEEE" # rename its tag
+    #             treeStr = ET.tostring(tree.getroot()) # transform to string
+    #             treeStr = treeStr.replace('<RRREEEMMOOOVVVEEEMMMEEE>', '') # remove leading tag
+    #             treeStr = treeStr.replace('</RRREEEMMOOOVVVEEEMMMEEE>', '') # remove following tag
+    #             treeStr = treeStr.replace('<RRREEEMMOOOVVVEEEMMMEEE />', '') # remove unpaired tag
+    #             tree._setroot(ET.fromstring(treeStr)) # transform back to xml tree
+    #             end = False
+    #             break
+    #     hardcap += 1
+    # if hardcap == 1000:
+    #     print tree.find('.//ID').text
+    # return tree
+    ## version 2
     end = False
-    while not end:
+    hardcap = 0 # run up to 1000 iterations
+    treeStr = ET.tostring(tree.getroot()) # transform to string
+    empty = '/><'
+    while not end and hardcap < 1000:
         end = True
-        for field in tree.iter():
-            # if we detect an empty field
-            # print field
-            if len(list(field)) == 0 and field.text is None:
-                field.tag = "RRREEEMMOOOVVVEEEMMMEEE" # rename its tag
-                treeStr = ET.tostring(tree.getroot()) # transform to string
-                treeStr = treeStr.replace('<RRREEEMMOOOVVVEEEMMMEEE>', '') # remove leading tag
-                treeStr = treeStr.replace('</RRREEEMMOOOVVVEEEMMMEEE>', '') # remove following tag
-                treeStr = treeStr.replace('<RRREEEMMOOOVVVEEEMMMEEE />', '') # remove unpaired tag
-                tree._setroot(ET.fromstring(treeStr)) # transform back to xml tree
-                end = False
-                break
+        if empty in treeStr:
+            end = False
+            right = treeStr.find(empty)
+            left = treeStr.rfind('<',0,right) # find from right, start = 0, end = right
+            treeStr = treeStr[0:left] + treeStr[right + len(empty) - 1:]
+        hardcap += 1
+    tree._setroot(ET.fromstring(treeStr)) # transform back to xml tree
+    if hardcap == 1000:
+        print tree.find('.//ID').text
     return tree
-
 # The function to move fields in a single xml file
 def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
     # first insert (duplicate), then remove
@@ -208,7 +229,7 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
                     realTag = keyCasFrom[-1] # the tag to replace 'ATempTagThatWantsNoSimilarity'
                     
                     for z in xrange(dup, len(keyCasFrom)):
-                        print destParentTempCas
+                        # print destParentTempCas
                         if (z == len(keyCasFrom) - 1):
                             # find the parent node of the field to remove
                             parent = findMyParent(tree, destParentTempCas, keyCasFrom[-1]) # Element (./.../ChooseParameter)
@@ -249,7 +270,7 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
                         else:
                             # last node then insert
                             if (z == len(keyCasFrom) - 1):
-                                print treeNow
+                                # print treeNow
                                 # find the parent node of the field to remove
                                 # parent = findMyParent(tree, pathExist, keyCasFrom[-1])
                                 parent = treeNow
@@ -277,10 +298,10 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
                 if occPtr <= 0:
                     continue
                 # create fields by keyCasTo if they are not existed
-                print trees
+                # print trees
                 treeNow = trees[kCTI-1]
                 for y in xrange(ptr+occPtr, len(keyCasTo) - 1):
-                    print keyCasTo[y]
+                    # print keyCasTo[y]
                     if (len(treeNow.findall(keyCasTo[y])) == 0):
                         ET.SubElement(treeNow, keyCasTo[y])
                     # pathExist = pathExist + "/" + keyCasTo[y]
@@ -311,8 +332,8 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
     tree = pinpointEmpty(tree)
     # newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
     # tree.write(newXmlDir)
-    # tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
-    tree.write(xmlDir + 'new.xml', encoding="UTF-8", xml_declaration=True)
+    tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
+    # tree.write(xmlDir + 'new.xml', encoding="UTF-8", xml_declaration=True)
 
 ## Test code
 ##xmlDir = "test2.xml"
