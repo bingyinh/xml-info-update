@@ -147,6 +147,9 @@ def pinpointEmpty(tree):
     tree._setroot(ET.fromstring(treeStr)) # transform back to xml tree
     if hardcap == 1000:
         print tree.find('.//ID').text
+    print empty in treeStr
+    print tree.find('.//ID').text
+    print '======================='
     return tree
 # The function to move fields in a single xml file
 def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
@@ -236,7 +239,7 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
                             # Element (./.../ChooseParameter/Solvent)
                             child = tree.find(destParentTempCas + "/" + keyCasFrom[z])
                             child.tag = keyCasTo[-1] # rename the tag according to the specification of the user from Solvent to SolventName
-                            destParent.insert(0, child) # now destParent is Element (./.../ChooseParameter/ATempTagThatWantsNoSimilarity/SolventName)
+                            destParent.insert(len(destParent), child) # now destParent is Element (./.../ChooseParameter/ATempTagThatWantsNoSimilarity/SolventName)
                             # call remove(subfield)
                             parent.remove(child)
                         destParentTempCas = destParentTempCas + "/" + keyCasFrom[z]
@@ -276,7 +279,7 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
                                 parent = treeNow
                                 child = treeNow.find(keyCasFrom[z])
                                 child.tag = keyCasTo[-1] # rename the tag according to the specification of the user
-                                destParent.insert(0, child)
+                                destParent.insert(len(destParent), child)
                                 # call remove(subfield)
                                 parent.remove(child)
                             pathExist = pathExist + "/" + keyCasFrom[z]
@@ -322,14 +325,14 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
                         parent = treeFrom
                         child = treeFrom.find(keyCasFrom[-1])
                         child.tag = keyCasTo[-1] # rename the tag according to the specification of the user
-                        destParent.insert(0, child)
+                        destParent.insert(len(destParent), child) # by default insert to the end of the branch
                         # call remove(subfield)
                         parent.remove(child)
                 print "under construction"
 
     # END OF THE LOOP
     # Final check of empty fields
-    tree = pinpointEmpty(tree)
+    # tree = pinpointEmpty(tree)
     # newXmlDir = saveDir + "/" + xmlDir.split("/")[-1]
     # tree.write(newXmlDir)
     tree.write(xmlDir, encoding="UTF-8", xml_declaration=True)
