@@ -37,7 +37,10 @@ def runInfoUpdate(csvDir):
                 callMove(row)
             elif (row['action'] == 'rename'):
                 callRename(row)
-
+            # one-time change of ambient condition
+            elif (row['action'] == 'ambient'):
+                callAmbient(row)
+                
 # A helper method that takes in a row from the csv reader that specifies to
 # "change" in the action column and calls the existing field info changing tool.
 def callChange(row):
@@ -46,7 +49,7 @@ def callChange(row):
     assert(row['key cascades'] != '')
     assert(row['infos'] != '')
     assert(row['destination key cascades'] == '')
-    print row['xml directory']
+    # print row['xml directory']
     change(row['xml directory'], row['key cascades'], row['infos'])
 
 # A helper method that takes in a row from the csv reader that specifies to
@@ -56,7 +59,7 @@ def callAdd(row):
     assert(row['xml directory'] != '')
     assert(row['key cascades'] != '')
     assert(row['destination key cascades'] == '')
-    print row['xml directory']
+    # print row['xml directory']
     add(row['xml directory'], row['key cascades'], row['infos'])
     
 # A helper method that takes in a row from the csv reader that specifies to
@@ -67,7 +70,7 @@ def callRemove(row):
     assert(row['key cascades'] != '')
     assert(row['infos'] == '')
     assert(row['destination key cascades'] == '')
-    print row['xml directory']
+    # print row['xml directory']
     remove(row['xml directory'], row['key cascades'])
 
 # A helper method that takes in a row from the csv reader that specifies to
@@ -76,11 +79,11 @@ def callMove(row):
     # first assert whether the row in csv has everything in the right place
     assert(row['xml directory'] != '')
     assert(row['key cascades'] != '')
-    assert(row['infos'] == '')
+    assert(row['infos'] != '')
     assert(row['destination key cascades'] != '')
-    print row['xml directory']
+    # print row['xml directory']
     move(row['xml directory'], row['key cascades'],
-         row['destination key cascades'])
+         row['destination key cascades'], row['infos'])
 
 # A helper method that takes in a row from the csv reader that specifies to
 # "change" in the action column and calls the existing field tag renaming tool.
@@ -90,16 +93,29 @@ def callRename(row):
     assert(row['key cascades'] != '')
     assert(row['infos'] != '')
     assert(row['destination key cascades'] == '')
-    print row['xml directory']
+    # print row['xml directory']
     rename(row['xml directory'], row['key cascades'], row['infos'])
+
+# A helper method that takes in a row from the csv reader that specifies to
+# "ambient" in the action column and calls the existing AC moving tool.
+def callAmbient(row):
+    # first assert whether the row in csv has everything in the right place
+    assert(row['xml directory'] != '')
+    assert(row['key cascades'] != '')
+    assert(row['infos'] != '')
+    assert(row['destination key cascades'] != '')
+    # print row['xml directory']
+    ambient(row['xml directory'], row['key cascades'],
+            row['destination key cascades'], row['info'])
     
 if __name__ == "__main__":
-    csvDir = raw_input("Please type in the directory of the csv file:")
-    while csvDir == "":
-        csvDir = raw_input("Please type in the directory of the csv file:")
+##    csvDir = raw_input("Please type in the directory of the csv file:")
+##    while csvDir == "":
+##        csvDir = raw_input("Please type in the directory of the csv file:")
 ##    saveDir = raw_input("Where would you like your updated xml files saved?")
 ##    while saveDir == "":
 ##        saveDir = raw_input("Where would you like your updated xml files saved?")
     # csvDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/042917to010918test.csv"
     # saveDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema"
+    csvDir = "./schema/single_test/test.csv"
     runInfoUpdate(csvDir)

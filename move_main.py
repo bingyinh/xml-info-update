@@ -14,11 +14,14 @@
 ## =============================================================================
 ## Output:
 ## 1] field to move from
-##    keyCassFrom: a dict {{xml file 1: [[key cascade], [cascade]...]},
-##                          xml file 2: [[key cascade], [cascade]...]}}
+##    keyCassFrom: a dict {'xml file 1': [[key cascade], [cascade]...],
+##                         'xml file 2': [[key cascade], [cascade]...]}
 ## 2] field to move to
-##    keyCassTo: a dict {{xml file 1: [[key cascade], [cascade]...]},
-##                        xml file 2: [[key cascade], [cascade]...]}}
+##    keyCassTo: a dict {'xml file 1': [[key cascade], [cascade]...],
+##                       'xml file 2': [[key cascade], [cascade]...]}
+## 3] index of field to move to
+##    keyCassToIndex: a dict {'xml file 1': ['2', 'self'],
+##                            'xml file 2': ['self', 'self']}
 ## The keys of the two dicts are all xml file directories
 ##
 ## Example:
@@ -28,9 +31,10 @@
 ##                               'Citation','CommonFields','FieldNotExists'],
 ##                              ['PolymerNanocomposite','DATA_SOURCE',
 ##                               'Citation','CommonFields']]}
-## keyCassFrom = {"test2.xml": [['PolymerNanocomposite','DATA_SOURCE'],
+## keyCassTo   = {"test2.xml": [['PolymerNanocomposite','DATA_SOURCE'],
 ##                              ['PolymerNanocomposite','DATA_SOURCE'],
 ##                              ['PolymerNanocomposite','MATERIALS','NewField']]}
+## keyCassToIndex = {"test2.xml": ['2', 'self']}
 ## =============================================================================
 from move_xml_field import singleXmlFieldMove
 # A helper method to parse the string form of key cascades into a 1d list and
@@ -64,13 +68,30 @@ def keyCassParse(xmlDir, keyCassString):
         keyCassV.append(casString)
     return {xmlDir: keyCassV}
 
+# A helper method for parsing keyCassToIndex
+def keyCassToIndexParse(xmlDir, keyCassString):
+    # create a blank list for 1d lists of key cascade, V stands for value
+    keyCassV = list()
+    # separate key cascades
+    casStrings = keyCassString.split(";")
+    for casString in casStrings:
+        # create a blank list for inserting key strings
+        keyCas = list()
+        # strip blank space and brackets
+        casString = casString.strip()
+        casString = casString.strip("[")
+        casString = casString.strip("]")
+        keyCassV.append(casString)
+    return {xmlDir: keyCassV}
+
 # The main method that reads strings from csv file, converts each xml entry
 # into dicts using keyCassParse() and infosParse(), feeds the dicts into add()
 
-def move(xmlDir, keyCassFromString, keyCassToString):
+def move(xmlDir, keyCassFromString, keyCassToString, keyCassToIndexString):
     keyCassFrom = keyCassParse(xmlDir, keyCassFromString)
     keyCassTo = keyCassParse(xmlDir, keyCassToString)
-    singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo)
+    keyCassToIndex = keyCassToIndexParse(xmlDir, keyCassToIndexString)
+    singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex)
 
 ## Test Code
 ##xmlDir = "test2.xml"
