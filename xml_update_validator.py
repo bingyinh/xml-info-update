@@ -24,19 +24,27 @@ import csv
 # run the validation one by one and generate an error log.
 def runValidation(xmlDir, xsdDir):
     xmlschema = etree.XMLSchema(etree.parse(xsdDir)) # parse the schema
-    xml_files = glob.glob(xmlDir + '*.xml') # find all xml files in xmlDir
+    if len(xmlDir) > 4 and xmlDir[-4:] == '.xml':
+        xml_files = [xmlDir]
+    else:
+        xml_files = glob.glob(xmlDir + '*.xml') # find all xml files in xmlDir
     errors = [] # a list of xml files that fail validation
+    # justerrors = [] # a list of error messages, tailored for XMLCONV, assuming only one xml file will be in the xmlDir
     for xml_file in xml_files:
         xml = etree.parse(xml_file)
         if not xmlschema.validate(xml):
-            errorInfo = str(xmlschema.error_log.last_error)
-            errorInfo = errorInfo[errorInfo.rfind('SCHEMAV_ELEMENT_CONTENT:')+len('SCHEMAV_ELEMENT_CONTENT:'):-1]
-            errors.append({'xml directory': xml_file.split("\\")[-1],
-                           'error': errorInfo})
+            for err in xmlschema.error_log:
+                errorInfo = str(err)
+                errorInfo = errorInfo[errorInfo.rfind(err.type_name + ':')+len(err.type_name + ':'):-1]
+                print errorInfo
+                errors.append({'xml directory': xml_file.split("\\")[-1],
+                               'error': errorInfo})
+                # justerrors.append('[XML Schema Validation Error] ' + errorInfo)
     logName = 'xml_validation_error_log_' + date.today().isoformat() + '.csv'
     with open(logName, 'wb') as f:
         writer = csv.DictWriter(f, fieldnames = ['xml directory', 'error'])
-        writer.writerow({'xml directory':"Date: " + date.today().isoformat()})
+        writer.writeheader()
+        # writer.writerow({'xml directory':"Date: " + date.today().isoformat()})
         for error in errors:
             writer.writerow(error)
     return logName
