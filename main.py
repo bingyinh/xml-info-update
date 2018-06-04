@@ -62,10 +62,10 @@ if __name__ == "__main__":
 ##    xsdDir = raw_input("Please type in the directory of the xsd schema file:")
 ##    while xsdDir == "":
 ##        xsdDir = raw_input("Please type in the directory of the xsd schema file:")
-    csvDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/042917to033018.csv"
-    xmlDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/xmlForUpdate2018-04-05/"
-    schemaID = '5904922ce74a1d36e1b78b7f' # PNC_schema_042917
-    xsdDir = "./schema/PNC_schema_033018.xsd"
+    csvDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/033018to060418.csv"
+    xmlDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/xmlForUpdate2018-06-04/"
+    schemaID = '5abe807ce74a1d06fd9943a0' # PNC_schema_033018
+    xsdDir = "./schema/PNC_schema_060418.xsd"
     (backupDir, csvCompDir) = runcsvCompletor(csvDir, xmlDir, schemaID)
     if csvCompDir is not None and backupDir is not None:
         runInfoUpdate(csvCompDir)
