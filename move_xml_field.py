@@ -164,6 +164,7 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
     for x in xrange(len(keyFromList)): # equivalent to xrange(len(keyToList)),
     # which stands for how many fields we'd like to move
         keyCasFrom = keyFromList[x].split("/")
+        print keyFromList[x]
         keyCasTo = keyToList[x].split("/")
         keyCasToIndex = keyToIndexList[x].lower()
         # default substitution of unspecified index is "self"
@@ -285,9 +286,10 @@ def singleXmlFieldMove(xmlDir, keyCassFrom, keyCassTo, keyCassToIndex):
                             pathExist = pathExist + "/" + keyCasFrom[z]
                             treeNow = treeNow.find(keyCasFrom[z])
             # rename the 'ATempTagThatWantsNoSimilarity' all at once
+            lastField = field
             for field in xrange(occur):
                 if len(dupPath) > 0:
-                    tempTag = tree.find(dupPath[:len(dupPath) - len(str(occur))] + str(field))
+                    tempTag = tree.find(dupPath[:len(dupPath) - len(str(lastField))] + str(field))
                     tempTag.tag = realTag
         # Case 2: index
         elif keyCasToIndex.isdigit():
