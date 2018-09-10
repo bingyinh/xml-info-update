@@ -22,7 +22,9 @@ import csv
 
 # A function that takes in the directory of the xml folder and the schema file,
 # run the validation one by one and generate an error log.
-def runValidation(xmlDir, xsdDir):
+def runValidation(xmlDir, xsdDir, jobDir):
+    if jobDir = '':
+        jobDir = '.'
     xmlschema = etree.XMLSchema(etree.parse(xsdDir)) # parse the schema
     if len(xmlDir) > 4 and xmlDir[-4:] == '.xml':
         xml_files = [xmlDir]
@@ -40,7 +42,7 @@ def runValidation(xmlDir, xsdDir):
                 errors.append({'xml directory': xml_file.split("\\")[-1],
                                'error': errorInfo})
                 # justerrors.append('[XML Schema Validation Error] ' + errorInfo)
-    logName = 'xml_validation_error_log_' + date.today().isoformat() + '.csv'
+    logName = jobDir + '/xml_validation_error_log_' + date.today().isoformat() + '.csv'
     with open(logName, 'wb') as f:
         writer = csv.DictWriter(f, fieldnames = ['xml directory', 'error'])
         writer.writeheader()
@@ -56,5 +58,7 @@ if __name__ == "__main__":
     xsdDir = raw_input("Please type in the directory of the xsd schema file:")
     while xsdDir == "":
         xsdDir = raw_input("Please type in the directory of the xsd schema file:")
-    logName = runValidation(xmlDir, xsdDir)
+    xmlDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/245-272_081218/"
+    xsdDir = "./schema/PNC_schema_081218.xsd"
+    logName = runValidation(xmlDir, xsdDir, '')
     print "Errors are saved in the log: " + logName
