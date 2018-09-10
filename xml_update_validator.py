@@ -23,7 +23,7 @@ import csv
 # A function that takes in the directory of the xml folder and the schema file,
 # run the validation one by one and generate an error log.
 def runValidation(xmlDir, xsdDir, jobDir):
-    if jobDir = '':
+    if jobDir == '':
         jobDir = '.'
     xmlschema = etree.XMLSchema(etree.parse(xsdDir)) # parse the schema
     if len(xmlDir) > 4 and xmlDir[-4:] == '.xml':
