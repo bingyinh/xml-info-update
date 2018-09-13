@@ -50,9 +50,9 @@ When the xml schema is updated, all existing data entries in NanoMine need to be
 - STEP 5 Upload xml files to database
 
 The scripts of STEP 1 and STEP 5 contain sensitive information and thus are not provided. For STEP 2 through STEP 4, all users need to do is to prepare a single csv file that specifies all the actions required for updating one xml file (see example.csv), and in terminal run 
-'''
+```
 python main.py
-'''
+```
 The script will complete the csv file for all xml files in the given folder, copy and update all xml files in a new folder with the same name of the original xml folder tailed with "\_update", validate the updated xml files with the given xsd schema, and generate an error log.
 
 ### 3. Preparations
@@ -68,9 +68,9 @@ Example file see example.csv.
 For updating of a folder of xml files using the same series of actions, which is usually the case when we update the xsd schema, we can prepare the actions as instructed in the previous paragraphs for just one xml file, and utilize the csv_completor.py to complete the csv file for all the xml files in the specified folder. 
 
 csv_completor.py can be used separatedly or as a function by
-''' 
+``` 
 from csv_completor import runcsvCompletor
-'''
+```
 Required inputs are:
 1. the directory of the prepared csv file for only one xml file
 2. the directory of the folder that contains all the xml files
@@ -85,19 +85,19 @@ In the following step, the update works will all be done in the "\_updated" fold
 #### Change Info in a Field (pass test on 11/15/2017)
 
 1. Prepare a csv file, fill in column 1 with "change", fill in column 2 with the directory of the xml file. In column 3, fill in the key cascade. For example: [key1/subkey1/subsubkey1]; [key2/subkey2/subsubkey2] Then fill in column 4 with the info corresponding to the fields specified in column 2. For example: info1; info2
-2. Run 'info_update_master.py' and enter the csv file directory on prompt.
+2. Run `info_update_master.py` and enter the csv file directory on prompt.
     
 #### Add a Field (w/ and w/o info) (pass test on 11/15/2017)
 
 1. Prepare a csv file, fill in column 1 with "add", fill in column 2 with the directory of the xml file. In column 3, fill in the key cascade. For example: [key1/subkey1/subsubkey1]; [key2/subkey2/subsubkey2]; [key3/subkey3] These key cascades should be the field to add into the xml file. Column 4 is for info to add with the new field but it is optional. It can either be left blank, or the corresponding infos with the same order as the key cascades in column 3. For example: info1; ; info3
 
-2. Run 'info_update_master.py' and enter the csv file directory on prompt.
+2. Run `info_update_master.py` and enter the csv file directory on prompt.
 
 #### Remove a Field (pass test on 11/16/2017)
 
 1. Prepare a csv file, fill in column 1 with "remove", fill in column 2 with the directory of the xml file. In column 3, fill in the key cascade. For example: [key1/subkey1/subsubkey1]; [key2/subkey2/subsubkey2]; [key3/subkey3] These key cascades should be the field to be removed in the xml file.
 
-2. Run 'info_update_master.py' and enter the csv file directory on prompt.
+2. Run `info_update_master.py` and enter the csv file directory on prompt.
 
 #### Move a Field (pass test on 02/19/2017)
 
@@ -115,14 +115,14 @@ To: [PolymerNanocomposite/MATERIALS/Filler/FillerComposition/Fraction/mass]
 ------------------------------------------------------
 This will move the double information stored in 'mass' to a new field named 'mass' under a new field 'Fraction'.
 
-2. Run 'info_update_master.py' and enter the csv file directory on prompt.
+2. Run `info_update_master.py` and enter the csv file directory on prompt.
 
 #### Rename a Field Tag (pass test on 11/17/2017)
 
 1. Prepare a csv file, fill in column 1 with "rename", fill in column 2 with the directory of the xml file. In column 3, fill in the key cascade. For example: [key1/subkey1/subsubkey1]; [key2/subkey2/subsubkey2]; [key3/subkey3] These key cascades should be the field to be renamed in the xml file. Then fill in column 4 with the new tags corresponding to the fields specified in column 2. For example: newtag1; newtag2
 
-2. Run 'info_update_master.py' and enter the csv file directory on prompt.
+2. Run `info_update_master.py` and enter the csv file directory on prompt.
 
 ### 5. Validation
 
-When the xml files are updated, a call will be made to 'xml_update_validator.py' to validate the updated xml files with the given schema. An error log will be exported in csv format.
+When the xml files are updated, a call will be made to `xml_update_validator.py` to validate the updated xml files with the given schema. An error log will be exported in csv format.
