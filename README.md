@@ -107,14 +107,16 @@ In the following step, the update works will all be done in the "\_updated" fold
 
     To: [PolymerNanocomposite/PROCESSING/MeltMixing/ChooseParameter/Solvent/SolventName]
 ```
-    This will move the string information stored in 'Solvent' to a new field named 'SolventName' under 'Solvent'.
+
+This will move the string information stored in 'Solvent' to a new field named 'SolventName' under 'Solvent'.
 
 ```
     From: [PolymerNanocomposite/MATERIALS/Filler/FillerComposition/mass]
 
     To: [PolymerNanocomposite/MATERIALS/Filler/FillerComposition/Fraction/mass]
 ```
-    This will move the double information stored in 'mass' to a new field named 'mass' under a new field 'Fraction'.
+
+This will move the double information stored in 'mass' to a new field named 'mass' under a new field 'Fraction'.
 
 2. Run `info_update_master.py` and enter the csv file directory on prompt.
 
