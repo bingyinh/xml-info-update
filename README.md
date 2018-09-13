@@ -102,18 +102,18 @@ In the following step, the update works will all be done in the "\_updated" fold
 #### Move a Field (pass test on 02/19/2017)
 
 1. Prepare a csv file, fill in column 1 with "move", fill in column 2 with the directory of the xml file. In column 3, fill in the key cascade. For example: [key1/subkey1/subsubkey1]; [key2/subkey2/subsubkey2]; [key3/subkey3] These key cascades should be the field to be moved in the xml file. Users are recommended to leave column 4 blank. They still can type in whatever they want in the column 4 but our script will ignore it. In column 5, fill in the destination key cascade. They should be the new fields for the specified data to reside. For example: [key1/subkey1/subsubkey1]; [key2/subkey2/subsubkey2]; [key3/subkey3] The last subkey SK in each key cascade stands for the field to be moved, no matter it's a leaf or a parent node. The last subkey in each destination key cascade accordingly stands for the new node to store all the information that used to reside in node SK, i.e. you can name it the same as SK or you can change its tag to something else. Two examples for your intuition:
-------------------------------------------------------
-From: [PolymerNanocomposite/PROCESSING/MeltMixing/ChooseParameter/Solvent]
 
-To: [PolymerNanocomposite/PROCESSING/MeltMixing/ChooseParameter/Solvent/SolventName]
+    From: [PolymerNanocomposite/PROCESSING/MeltMixing/ChooseParameter/Solvent]
 
-This will move the string information stored in 'Solvent' to a new field named 'SolventName' under 'Solvent'.
+    To: [PolymerNanocomposite/PROCESSING/MeltMixing/ChooseParameter/Solvent/SolventName]
 
-From: [PolymerNanocomposite/MATERIALS/Filler/FillerComposition/mass]
+    This will move the string information stored in 'Solvent' to a new field named 'SolventName' under 'Solvent'.
 
-To: [PolymerNanocomposite/MATERIALS/Filler/FillerComposition/Fraction/mass]
+    From: [PolymerNanocomposite/MATERIALS/Filler/FillerComposition/mass]
 
-This will move the double information stored in 'mass' to a new field named 'mass' under a new field 'Fraction'.
+    To: [PolymerNanocomposite/MATERIALS/Filler/FillerComposition/Fraction/mass]
+
+    This will move the double information stored in 'mass' to a new field named 'mass' under a new field 'Fraction'.
 
 2. Run `info_update_master.py` and enter the csv file directory on prompt.
 
