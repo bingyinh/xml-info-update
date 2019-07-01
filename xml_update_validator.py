@@ -38,12 +38,12 @@ def runValidation(xmlDir, xsdDir, jobDir):
             for err in xmlschema.error_log:
                 errorInfo = str(err)
                 errorInfo = errorInfo[errorInfo.rfind(err.type_name + ':')+len(err.type_name + ':'):-1]
-                print errorInfo
+                print(errorInfo)
                 errors.append({'xml directory': xml_file.split("\\")[-1],
                                'error': errorInfo})
                 # justerrors.append('[XML Schema Validation Error] ' + errorInfo)
     logName = jobDir + '/xml_validation_error_log_' + date.today().isoformat() + '.csv'
-    with open(logName, 'wb') as f:
+    with open(logName, 'w', newline = '') as f:
         writer = csv.DictWriter(f, fieldnames = ['xml directory', 'error'])
         writer.writeheader()
         # writer.writerow({'xml directory':"Date: " + date.today().isoformat()})
@@ -52,13 +52,11 @@ def runValidation(xmlDir, xsdDir, jobDir):
     return logName
 
 if __name__ == "__main__":
-    xmlDir = raw_input("Please type in the directory of the folder of the xml files:")
+    xmlDir = input("Please type in the directory of the folder of the xml files:")
     while xmlDir == "":
-        xmlDir = raw_input("Please type in the directory of the folder of the xml files:")
-    xsdDir = raw_input("Please type in the directory of the xsd schema file:")
+        xmlDir = input("Please type in the directory of the folder of the xml files:")
+    xsdDir = input("Please type in the directory of the xsd schema file:")
     while xsdDir == "":
-        xsdDir = raw_input("Please type in the directory of the xsd schema file:")
-    xmlDir = "E:/Dropbox/DIBBS/data_update/info_update_xml/schema/245-272_081218/"
-    xsdDir = "./schema/PNC_schema_081218.xsd"
+        xsdDir = input("Please type in the directory of the xsd schema file:")
     logName = runValidation(xmlDir, xsdDir, '')
-    print "Errors are saved in the log: " + logName
+    print("Errors are saved in the log: " + logName)
